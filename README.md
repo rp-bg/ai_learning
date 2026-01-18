@@ -50,8 +50,21 @@ graph TD
     style G fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
+
 1.  **Forward Pass**: The model makes a guess based on the input.
 2.  **Loss**: We measure how "wrong" the guess was (Error).
 3.  **Backward Pass**: We calculate *how* to change the parameters to reduce the error.
 4.  **Optimizer Step**: The optimizer automatically updates the model's internal weights using the gradients.
+
+### Lesson 4: Neural Networks & Non-Linearity (ReLU)
+**Goal:** Build a "real" Neural Network by introducing a hidden layer and non-linear activation.
+- **Run:** `cargo run --bin activity4`
+- **Concepts:** Hidden Layers, `ReLU` (Rectified Linear Unit), Modeling Non-Linear Relationships.
+- **Task:** Predict memory usage with a smarter model.
+
+#### Why do we need ReLU?
+Previously, our models were just straight lines ($y = mx + b$). But real-world data is messy and curvy.
+- **Hidden Layer:** Adds complexity to the model, allowing it to learn features.
+- **ReLU:** Adds "non-linearity", allowing the model to bend and twist its predictions to fit complex patterns, rather than just drawing a straight line.
+
 
