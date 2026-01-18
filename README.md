@@ -61,7 +61,7 @@ graph TD
     A[Input Tensors] -->|Matrix Math| B(Tensor Operations)
     B -->|Guess| C[Prediction]
     C -->|Check Error| D{MSE Loss}
-    D -->|Magic backward()| E[Auto Gradients]
+    D -->|"Magic backward()"| E[Auto Gradients]
     E -->|Subtract from Weights| B
     
     style B fill:#bbf,stroke:#333
