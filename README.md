@@ -61,7 +61,7 @@ graph TD
     A[Input Tensors] -->|Matrix Math| B(Tensor Operations)
     B -->|Guess| C[Prediction]
     C -->|Check Error| D{MSE Loss}
-    D -->| Magic .backward()| E[Auto Gradients]
+    D -->|Magic backward()| E[Auto Gradients]
     E -->|Subtract from Weights| B
     
     style B fill:#bbf,stroke:#333
@@ -112,7 +112,7 @@ Previously, our models were just straight lines ($y = mx + b$). But real-world d
 Now we add a "hidden" layer that processes the data before the final answer.
 
 ```mermaid
-graph LR
+graph TD
     A[Input] -->|Layer 1| B(Linear Transform)
     B -->|Activation| C{ReLU: Remove Negatives}
     C -->|Layer 2| D(Linear Transform)
