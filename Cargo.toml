@@ -17,3 +17,7 @@ path = "src/activity/lesson1.rs"
 [[bin]]
 name = "activity2"
 path = "src/activity/lesson2.rs"
+
+[[bin]]
+name = "activity3"
+path = "src/activity/lesson3.rs"

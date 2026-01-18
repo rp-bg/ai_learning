@@ -26,3 +26,32 @@ Goal: Understand the math and basic building blocks without frameworks.
 - **Task:** Predict **Memory Usage** based on **Session Duration** and **API Calls**.
   - Model: $Memory \approx w_1 \cdot Session + w_2 \cdot API + b$
   - Uses `Autodiff<Wgpu>` backend to compute gradients and update weights manualy.
+
+### Lesson 3: The "Burn Way" (Modules & Optimizers)
+**Goal:** Abstract away manual weight handling using Burn's high-level building blocks.
+- **Run:** `cargo run --bin activity3`
+- **Concepts:** `Module`, `Optimizer`, `LinearConfig`, `Adam`, `GradientsParams`.
+- **Task:** Same prediction task as Lesson 2, but cleaner code.
+
+#### How it works (Layman's Terms)
+Instead of managing every single number (weight) manually, we wrap them in a **Module** (the "brain") and hire an **Optimizer** (the "teacher") to update them.
+
+```mermaid
+graph TD
+    A[Input Data] -->|Feed into| B(Model / Brain)
+    B -->|Make Prediction| C[Guess]
+    C -->|Compare with| D[Actual Target]
+    D -->|Calculate| E{Loss / Error}
+    E -->|Calculate Gradients| F[Backward Pass]
+    F -->|Give info to| G[Optimizer / Teacher]
+    G -->|Adjust Weights| B
+    
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+1.  **Forward Pass**: The model makes a guess based on the input.
+2.  **Loss**: We measure how "wrong" the guess was (Error).
+3.  **Backward Pass**: We calculate *how* to change the parameters to reduce the error.
+4.  **Optimizer Step**: The optimizer automatically updates the model's internal weights using the gradients.
+
