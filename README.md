@@ -4,12 +4,23 @@ This repository documents my journey learning Artificial Intelligence using the 
 
 ## Curriculum
 
-### Phase 1: Foundations
-Goal: Understand the math and basic building blocks without frameworks.
-- [x] **Lesson 1: Tensors and Linear Regression**
-    - Learned about `ndarray` for matrix operations.
-    - Built a Linear Regression model "the hard way" (Manually implementing Forward Pass, Loss, and Gradient Descent).
-    - Learned the function $y = 2x + 1$ successfully.
+### Phase 1: Foundations (No Frameworks)
+Goal: Understand the math and basic building blocks from scratch.
+- [x] **Lesson 1: Tensors and Linear Regression (ndarray)**
+    - Built a Linear Regression model "the hard way".
+    - Manually implemented Forward Pass, Loss (MSE), and Gradient Descent.
+
+### Phase 2: Introduction to Burn Framework
+Goal: Transition to a deep learning framework, learning its core primitives and modularity.
+- [x] **Lesson 2: Linear Regression with Autodiff**
+    - Introduced `burn` and `wgpu`.
+    - Used Automatic Differentiation to replace manual gradient calculations.
+- [x] **Lesson 3: The "Burn Way" (Modules & Optimizers)**
+    - Abstracted weights into `Module`s.
+    - Used `Optimizer`s (Adam) for automatic weight updates.
+- [x] **Lesson 4: Neural Networks & Non-Linearity**
+    - Introduced Hidden Layers and Activation Functions (`ReLU`).
+    - Moved from simple linear regression to a basic Neural Network.
 
 ## Lessons
 
@@ -19,6 +30,21 @@ Goal: Understand the math and basic building blocks without frameworks.
 - **Concepts:** `ndarray`, Tensors, Forward Pass, MSE Loss, Gradient Descent.
 - **Task:** Learn the function $y = 2x + 1$.
 
+#### Flow Chart (Layman's Terms)
+We did everything manually:
+
+```mermaid
+graph TD
+    A[Input Numbers] -->|Multiply & Add| B(Manual Formula y=mx+c)
+    B -->|Guess| C[Prediction]
+    C -->|Check Error| D{MSE Loss}
+    D -->|Calc Math Derivate| E[Manual Gradients]
+    E -->|Subtract form Weights| B
+    
+    style B fill:#f9f,stroke:#333
+    style E fill:#faa,stroke:#333
+```
+
 ### Lesson 2: Linear Regression with Burn (Autodiff)
 **Goal:** Implement Linear Regression using the **Burn** framework with automatic differentiation.
 - **Run:** `cargo run --bin activity2`
@@ -27,13 +53,28 @@ Goal: Understand the math and basic building blocks without frameworks.
   - Model: $Memory \approx w_1 \cdot Session + w_2 \cdot API + b$
   - Uses `Autodiff<Wgpu>` backend to compute gradients and update weights manualy.
 
+#### Flow Chart (Layman's Terms)
+We stopped doing calculus manually, but still managed the weights ourselves.
+
+```mermaid
+graph TD
+    A[Input Tensors] -->|Matrix Math| B(Tensor Operations)
+    B -->|Guess| C[Prediction]
+    C -->|Check Error| D{MSE Loss}
+    D -->| Magic .backward()| E[Auto Gradients]
+    E -->|Subtract from Weights| B
+    
+    style B fill:#bbf,stroke:#333
+    style E fill:#bbf,stroke:#333
+```
+
 ### Lesson 3: The "Burn Way" (Modules & Optimizers)
 **Goal:** Abstract away manual weight handling using Burn's high-level building blocks.
 - **Run:** `cargo run --bin activity3`
 - **Concepts:** `Module`, `Optimizer`, `LinearConfig`, `Adam`, `GradientsParams`.
 - **Task:** Same prediction task as Lesson 2, but cleaner code.
 
-#### How it works (Layman's Terms)
+#### Flow Chart (Layman's Terms)
 Instead of managing every single number (weight) manually, we wrap them in a **Module** (the "brain") and hire an **Optimizer** (the "teacher") to update them.
 
 ```mermaid
@@ -66,5 +107,20 @@ graph TD
 Previously, our models were just straight lines ($y = mx + b$). But real-world data is messy and curvy.
 - **Hidden Layer:** Adds complexity to the model, allowing it to learn features.
 - **ReLU:** Adds "non-linearity", allowing the model to bend and twist its predictions to fit complex patterns, rather than just drawing a straight line.
+
+#### Flow Chart (Layman's Terms)
+Now we add a "hidden" layer that processes the data before the final answer.
+
+```mermaid
+graph LR
+    A[Input] -->|Layer 1| B(Linear Transform)
+    B -->|Activation| C{ReLU: Remove Negatives}
+    C -->|Layer 2| D(Linear Transform)
+    D -->|Final Guess| E[Prediction]
+    E -->|Error| F[Loss]
+    F -->|Optimize| G[Update All Weights]
+
+    style C fill:#f96,stroke:#333,stroke-width:2px
+```
 
 
