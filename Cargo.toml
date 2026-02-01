@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-burn = { version = "0.14.0", features = ["wgpu", "vision", "train"] }
+burn = { version = "0.14.0", features = ["wgpu", "vision", "train", "ndarray"] }
 tokio = { version = "1.0", features = ["rt", "macros"] }
 serde = { version = "1.0", features = ["derive"] }
 ndarray = "0.15"
@@ -25,3 +25,8 @@ path = "src/activity/lesson3.rs"
 [[bin]]
 name = "activity4"
 path = "src/activity/lesson4.rs"
+
+[[bin]]
+name = "activity5"
+path = "src/activity/lesson5.rs"
+
