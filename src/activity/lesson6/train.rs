@@ -32,38 +32,38 @@ pub fn run_training<B: AutodiffBackend>(
         .num_workers(1)
         .build(dataset);
 
-    // --- Train Linear Model ---
-    println!("\nTraining Linear Model...");
-    let mut model_linear = LinearModel::<B>::new(&device);
-    let mut optim_linear = AdamConfig::new().init();
-    let mut last_loss_linear = None;
+    // // --- Train Linear Model ---
+    // println!("\nTraining Linear Model...");
+    // let mut model_linear = LinearModel::<B>::new(&device);
+    // let mut optim_linear = AdamConfig::new().init();
+    // let mut last_loss_linear = None;
 
-    for epoch in 1..=epochs {
-        let mut batch_count = 0;
-        let mut epoch_loss = None;
+    // for epoch in 1..=epochs {
+    //     let mut batch_count = 0;
+    //     let mut epoch_loss = None;
 
-        for batch in dataloader.iter() {
-            let outputs = model_linear.forward(batch.inputs);
-            let loss = MseLoss::new().forward(outputs, batch.targets, Reduction::Mean);
+    //     for batch in dataloader.iter() {
+    //         let outputs = model_linear.forward(batch.inputs);
+    //         let loss = MseLoss::new().forward(outputs, batch.targets, Reduction::Mean);
 
-            epoch_loss = Some(loss.clone());
-            batch_count += 1;
+    //         epoch_loss = Some(loss.clone());
+    //         batch_count += 1;
 
-            let grads = loss.backward();
-            let grads_params = GradientsParams::from_grads(grads, &model_linear);
-            model_linear = optim_linear.step(lr, model_linear, grads_params);
-        }
-        if epoch % 5 == 0 || epoch == 1 {
-            if let Some(loss) = &epoch_loss {
-                println!(
-                    "Epoch {} | Batches: {} | Last Loss: {}",
-                    epoch, batch_count, loss
-                );
-            }
-        }
-        last_loss_linear = epoch_loss;
-    }
-    println!("Linear Model Final Loss: {:?}", last_loss_linear);
+    //         let grads = loss.backward();
+    //         let grads_params = GradientsParams::from_grads(grads, &model_linear);
+    //         model_linear = optim_linear.step(lr, model_linear, grads_params);
+    //     }
+    //     if epoch % 5 == 0 || epoch == 1 {
+    //         if let Some(loss) = &epoch_loss {
+    //             println!(
+    //                 "Epoch {} | Batches: {} | Last Loss: {}",
+    //                 epoch, batch_count, loss
+    //             );
+    //         }
+    //     }
+    //     last_loss_linear = epoch_loss;
+    // }
+    // println!("Linear Model Final Loss: {:?}", last_loss_linear);
 
     // --- Train Neural Model ---
     println!("\nTraining Neural Model (ReLU)...");
