@@ -28,6 +28,11 @@ Goal: Transition to a deep learning framework, learning its core primitives and 
 - [x] **Lesson 5: Putting it all together**
   - A minimal, complete example of a Neural Network training loop.
   - Switched backend to `NdArray` (CPU).
+- [x] **Lesson 6: Real-World Data & CLI Tool**
+  - Load and normalize CSV data (Bike Sharing Dataset).
+  - Train Linear vs Neural models, compare losses.
+  - GPU execution with WGPU, mini-batch training.
+  - CLI tool for training and prediction.
 
 ## Lessons
 
@@ -182,4 +187,91 @@ graph TD
     style B fill:#f9f,stroke:#333,stroke-width:2px
     style D fill:#faa,stroke:#333,stroke-width:2px
     style F fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### Lesson 6: Real-World Data & CLI Tool (GPU)
+
+**Goal:** Build a complete ML pipeline with real-world data, GPU execution, model checkpointing, and a CLI.
+
+- **Run:** `cargo run --bin lesson6 -- train --dataset hour.csv --epochs 20`
+- **Predict:** `cargo run --bin lesson6 -- predict --hr 17 --temp 0.44 --hum 0.82 --windspeed 0.28 --workingday 1`
+- **Concepts:** CSV loading, Feature Normalization, Mini-Batch Training, Model Comparison, GPU (WGPU), Model Checkpointing, Clap CLI.
+- **Task:** Predict bike sharing counts from weather/time features using the [UCI Bike Sharing Dataset](https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset).
+
+#### Features Used
+
+| Feature      | Description            |
+| ------------ | ---------------------- |
+| `hr`         | Hour of the day (0-23) |
+| `temp`       | Normalized temperature |
+| `hum`        | Normalized humidity    |
+| `windspeed`  | Normalized wind speed  |
+| `workingday` | Working day flag (0/1) |
+
+#### Project Structure
+
+```
+src/activity/lesson6/
+├── cli.rs      # Command-line argument parsing (Clap)
+├── data.rs     # CSV loading, normalization, batching, save/load
+├── model.rs    # Linear and Neural model definitions
+├── train.rs    # Training loop, model saving
+├── predict.rs  # Model loading, inference
+└── main.rs     # Entry point, backend setup, CLI dispatch
+```
+
+#### Model Checkpointing
+
+After training, the model and normalization parameters are saved to disk:
+
+```
+artifacts/
+├── bike_model.mpk      # Trained Neural Model weights (MessagePack format)
+└── normalizer.json     # Normalization parameters (mean, std, target_max)
+```
+
+This allows predictions to be made without re-training.
+
+#### Usage Examples
+
+```bash
+# Train models and save to artifacts/
+cargo run --bin lesson6 -- train --dataset hour.csv --epochs 50 --batch-size 64
+
+# Make predictions using saved model
+cargo run --bin lesson6 -- predict --hr 17 --temp 0.44 --hum 0.82 --windspeed 0.28 --workingday 1
+# Output: Predicted bike count: 348
+
+cargo run --bin lesson6 -- predict --hr 8 --temp 0.3 --hum 0.6 --windspeed 0.1 --workingday 1
+# Output: Predicted bike count: ~200 (morning commute)
+```
+
+#### Flow Chart
+
+```mermaid
+graph TD
+    subgraph Training
+        CSV[hour.csv] -->|Parse| A(Load Data)
+        A -->|Calculate Stats| N[Normalizer]
+        A -->|Normalize| B[Tensors X, Y]
+        B --> C{Train Linear Model}
+        B --> D{Train Neural Model}
+        C --> E[Compare Losses]
+        D --> E
+        E --> F[Save Model]
+        N --> G[Save Normalizer]
+    end
+
+    subgraph Inference
+        H[User Input] --> I[Load Normalizer]
+        I --> J[Normalize Input]
+        J --> K[Load Model]
+        K --> L[Forward Pass]
+        L --> M[Denormalize Output]
+        M --> O[Predicted Bike Count]
+    end
+
+    style D fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+    style K fill:#bbf,stroke:#333,stroke-width:2px
 ```
