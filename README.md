@@ -33,6 +33,11 @@ Goal: Transition to a deep learning framework, learning its core primitives and 
   - Train Linear vs Neural models, compare losses.
   - GPU execution with WGPU, mini-batch training.
   - CLI tool for training and prediction.
+- [x] **Lesson 7: Batched DataLoader & Training Loop**
+  - Introduced `Batcher` and `DataLoader` for efficient data handling.
+  - Implemented structured training loop with automatic shuffling.
+  - Persistence of model weights and normalization stats.
+  - GPU acceleration with WGPU.
 
 ## Lessons
 
@@ -274,4 +279,54 @@ graph TD
     style D fill:#f9f,stroke:#333,stroke-width:2px
     style F fill:#bbf,stroke:#333,stroke-width:2px
     style K fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### Lesson 7: Batched DataLoader & Training Loop (GPU)
+
+**Goal:** Implement professional data loading and batching using Burn's `DataLoader` and `Batcher` traits.
+
+- **Run Train:** `cargo run --bin activity7 -- train`
+- **Run Predict:** `cargo run --bin activity7 -- predict --hr 10 --temp 0.5 --hum 0.5 --windspeed 0.1 --workingday 1.0`
+- **Concepts:** `Batcher` Trait, `DataLoaderBuilder`, Mini-batching, Model Persistence, GPU (WGPU).
+
+#### Why use a DataLoader?
+
+In previous lessons, we manually handled slices of tensors. For large-scale AI, this doesn't scale. Burn's `DataLoader` provides:
+
+1.  **Automatic Batching**: Uses a `Batcher` to stack individual samples into tensors.
+2.  **Shuffling**: Randomizes the data every epoch to prevent the model from learning the sequence.
+3.  **Efficiency**: Can pre-fetch data in the background (using multi-worker threads).
+
+#### The Batching Process
+
+The `Batcher` acts as a bridge between your raw dataset and the model input.
+
+```mermaid
+graph LR
+    A[Dataset Item 1] --> B{Batcher}
+    A2[Dataset Item 2] --> B
+    An[Dataset Item N] --> B
+    B -->|Stack| C[Tensor: Batch Size x Dim]
+    C -->|Feed| D(Neural Network)
+
+    style B fill:#f96,stroke:#333
+    style C fill:#bbf,stroke:#333
+```
+
+#### Saving & Loading
+
+Lesson 7 separates training and prediction completely. It saves two files:
+
+- `artifacts/lesson7/model.mpk`: The neural weights.
+- `artifacts/lesson7/stats.json`: Normalization constants required to pre-process data for prediction.
+
+#### Usage Example
+
+```bash
+# Train the model on your GPU
+cargo run --bin activity7 -- train
+
+# Predict using the saved weights
+cargo run --bin activity7 -- predict --hr 8 --temp 0.2 --hum 0.8 --windspeed 0.2 --workingday 1
+# Output: Predicted Bike Demand: ~180 units
 ```

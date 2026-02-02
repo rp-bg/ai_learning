@@ -8,7 +8,7 @@ use burn::{
     nn::loss::{MseLoss, Reduction},
     nn::{Linear, LinearConfig, Relu},
     optim::{AdamConfig, GradientsParams, Optimizer},
-    record::{FullPrecisionSettings, NamedMpkFileRecorder, Recorder},
+    record::{FullPrecisionSettings, NamedMpkFileRecorder},
     tensor::{
         Tensor,
         backend::{AutodiffBackend, Backend},
