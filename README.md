@@ -203,7 +203,7 @@ graph TD
 
 **Goal:** Build a complete ML pipeline with real-world data, GPU execution, model checkpointing, and a CLI.
 
-- **Run:** `cargo run --bin lesson6 -- train --dataset hour.csv --epochs 20`
+- **Run:** `cargo run --bin lesson6 -- train --dataset data/lesson7/hour.csv --epochs 20`
 - **Predict:** `cargo run --bin lesson6 -- predict --hr 17 --temp 0.44 --hum 0.82 --windspeed 0.28 --workingday 1`
 - **Concepts:** CSV loading, Feature Normalization, Mini-Batch Training, Model Comparison, GPU (WGPU), Model Checkpointing, Clap CLI.
 - **Task:** Predict bike sharing counts from weather/time features using the [UCI Bike Sharing Dataset](https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset).
@@ -246,7 +246,7 @@ This allows predictions to be made without re-training.
 
 ```bash
 # Train models and save to artifacts/
-cargo run --bin lesson6 -- train --dataset hour.csv --epochs 50 --batch-size 64
+cargo run --bin lesson6 -- train --dataset data/lesson7/hour.csv --epochs 50 --batch-size 64
 
 # Make predictions using saved model
 cargo run --bin lesson6 -- predict --hr 17 --temp 0.44 --hum 0.82 --windspeed 0.28 --workingday 1
@@ -261,7 +261,7 @@ cargo run --bin lesson6 -- predict --hr 8 --temp 0.3 --hum 0.6 --windspeed 0.1 -
 ```mermaid
 graph TD
     subgraph Training
-        CSV[hour.csv] -->|Parse| A(Load Data)
+        CSV[data/lesson7/hour.csv] -->|Parse| A(Load Data)
         A -->|Calculate Stats| N[Normalizer]
         A -->|Normalize| B[Tensors X, Y]
         B --> C{Train Linear Model}

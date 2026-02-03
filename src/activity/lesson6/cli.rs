@@ -12,7 +12,7 @@ pub enum Commands {
     /// Train the models (Linear vs ReLU)
     Train {
         /// Path to the dataset (csv file)
-        #[arg(short, long, default_value = "hour.csv")]
+        #[arg(short, long, default_value = "data/lesson7/hour.csv")]
         dataset: String,
 
         /// Number of epochs

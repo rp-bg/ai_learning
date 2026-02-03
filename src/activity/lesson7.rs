@@ -162,7 +162,7 @@ impl<B: Backend> BikeNN<B> {
 
 fn prepare_data(path: &str) -> (InMemDataset<BikeItem>, f32) {
     let mut reader =
-        csv::Reader::from_path(path).expect("Make sure hour.csv is in the root directory");
+        csv::Reader::from_path(path).expect("Make sure hour.csv is in data/lesson7/ directory");
 
     let mut items = Vec::new();
     let mut max_cnt = 1.0;
@@ -203,7 +203,7 @@ fn train<B: AutodiffBackend>(device: B::Device) {
     let lr = 1e-3;
 
     // Setup Data
-    let (dataset, max_cnt) = prepare_data("hour.csv");
+    let (dataset, max_cnt) = prepare_data("data/lesson7/hour.csv");
     let batcher = BikeBatcher::<B>::new(device.clone());
 
     // The DataLoader manages the batcher, dataset, shuffling, and worker threads.
