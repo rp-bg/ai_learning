@@ -38,6 +38,11 @@ Goal: Transition to a deep learning framework, learning its core primitives and 
   - Implemented structured training loop with automatic shuffling.
   - Persistence of model weights and normalization stats.
   - GPU acceleration with WGPU.
+- [x] **Lesson 8: Tiny GPT from Scratch**
+  - Implemented a character-level decoder-only Transformer.
+  - Multi-head causal self-attention with masking.
+  - Autoregressive text generation with temperature sampling.
+  - Model checkpointing and CLI for interaction.
 
 ## Lessons
 
@@ -330,3 +335,57 @@ cargo run --bin activity7 -- train
 cargo run --bin activity7 -- predict --hr 8 --temp 0.2 --hum 0.8 --windspeed 0.2 --workingday 1
 # Output: Predicted Bike Demand: ~180 units
 ```
+
+### Lesson 8: Tiny GPT from Scratch (Decoder-only Transformer)
+
+**Goal:** Understand the internal architecture of Large Language Models (LLMs) by building a "Tiny GPT" from the ground up.
+
+- **Run Train:** `cargo run --bin lesson8 -- train`
+- **Run Generate:** `cargo run --bin lesson8 -- generate --prompt "Learning Rust is "`
+- **Concepts:** Tokenization (char-level), Causal Self-Attention, Positional Embeddings, Masking, Transformer Blocks, Pre-norm architecture, Autoregressive Generation, Temperature Sampling.
+
+#### What is a Decoder-only Transformer?
+
+A decoder-only transformer (like GPT-2/3/4) is designed to predict the **next token** in a sequence. It uses "Causal Attention," meaning it is restricted from looking at future tokens during training (otherwise it would just cheat by looking up the answer).
+
+#### Key Components
+
+1.  **Causal Masking**: A triangular mask that ensures token $i$ can only attend to tokens $0 \dots i$.
+2.  **Multi-Head Attention**: Allows the model to focus on different parts of the text simultaneously (e.g., grammar, meaning, and context).
+3.  **Feed Forward Network (FFN)**: Two linear layers with a ReLU activation that process each token independently.
+4.  **Residual Connections & LayerNorm**: Critical for training deep networks without "exploding" or "vanishing" gradients.
+
+#### Flow Chart (Transformer Block)
+
+```mermaid
+graph TD
+    In[Input Tokens] --> Emb[Embedding + Positional]
+    Emb --> Norm1[LayerNorm]
+    Norm1 --> Attn[Causal Self-Attention]
+    Attn --> Res1[Residual Connection]
+    Res1 --> Norm2[LayerNorm]
+    Norm2 --> FFN[Feed Forward Network]
+    FFN --> Res2[Residual Connection]
+    Res2 --> Head[Output Head / Vocab Logits]
+
+    style Attn fill:#f96,stroke:#333
+    style FFN fill:#bbf,stroke:#333
+    style Res1 fill:#dfd,stroke:#333
+    style Res2 fill:#dfd,stroke:#333
+```
+
+#### CLI Usage
+
+The project includes a CLI for training and testing:
+
+```bash
+# 1. Train the model (saves to artifacts/lesson8/)
+cargo run --bin lesson8 -- train
+
+# 2. Generate text with a custom prompt
+cargo run --bin lesson8 -- generate --prompt "Transformer models are " --length 100 --temperature 0.8
+```
+
+#### Why character-level?
+
+For this learning project, we use individual characters as tokens (e.g., 'a', 'b', '!', ' ') rather than words. This keeps the vocabulary size tiny (~65-100 items), making it much faster to train on a single GPU while still demonstrating the "magic" of LLMs.

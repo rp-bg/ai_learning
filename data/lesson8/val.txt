@@ -1,0 +1,18 @@
+learning happens through iteration.
+models improve with feedback.
+
+programs run on hardware.
+cpus are good at control.
+gpus are good at parallel work.
+
+attention is a mechanism.
+it weighs relationships between tokens.
+
+training adjusts weights.
+better weights reduce loss.
+
+simple models are easier to debug.
+complex models require care.
+
+hello transformer.
+hello tiny gpt.

@@ -1,0 +1,51 @@
+intelligence is the ability to learn from experience.
+learning requires repetition.
+repetition builds understanding.
+
+a program is a set of instructions.
+a good program is simple.
+a great program is simple and correct.
+
+rust is a systems programming language.
+rust emphasizes safety and performance.
+ownership prevents data races.
+
+machine learning is not magic.
+it is math plus data.
+models learn patterns from examples.
+
+a neural network is a function.
+it maps inputs to outputs.
+weights define the behavior.
+
+transformers use attention.
+attention allows tokens to communicate.
+self attention looks at itself.
+
+the gpu runs kernels.
+kernels process many values at once.
+parallelism makes things fast.
+
+memory usage depends on workload.
+longer sessions use more memory.
+more requests increase memory pressure.
+
+a model predicts the next token.
+training minimizes loss.
+loss measures how wrong the prediction is.
+
+adam is an optimizer.
+it adapts learning rates.
+it helps training converge.
+
+relu introduces nonlinearity.
+without relu the model is linear.
+nonlinearity increases expressiveness.
+
+software is built step by step.
+understanding beats memorization.
+clarity beats cleverness.
+
+hello world.
+hello rust.
+hello machine learning.
